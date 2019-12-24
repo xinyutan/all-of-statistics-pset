@@ -1,0 +1,118 @@
+\documentclass{article}
+
+\usepackage[margin=0.6in]{geometry} 
+
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
+
+\newcommand{\R}{\mathbf{R}}  
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+
+\large % please keep the text at this size for ease of reading.
+
+% ------------------------------------------ %
+%                 START HERE             %
+% ------------------------------------------ %
+
+{\Large Page 79 % Replace with appropriate page number 
+\hfill  Ch3, Introduction to Multiparameter Models}
+
+\begin{center}
+{\Large Xinyu Tan} 
+\end{center}
+\vspace{0.05in}
+
+% -----------------------------------------------------
+% The "enumerate" environment allows for automatic problem numbering.
+% To make the number for the next problem, type " \item ". 
+% To make sub-problems such as (a), (b), etc., use an "enumerate" within an "enumerate."
+% -----------------------------------------------------
+ \renewcommand{\labelitemi}{$\textendash$}
+\begin{itemize}
+
+% -----------------------------------------------------
+% Ex. 9
+% -----------------------------------------------------
+
+\item \textbf{9. Conjugate normal model}
+
+Suppose  $y$ is an i.i.d sample of size $n$ from the distribution $N(\mu, \sigma^2)$. Prior for $(\mu, \sigma^2)$ is
+$$
+\text{N-Inv-} {\chi}^2 (\mu, \sigma^2 | \mu_0, \sigma_0^2/\kappa_0; \nu_0, \sigma_0^2)
+$$
+
+This is derived from 
+
+\begin{align*}
+\mu | \sigma^2 &\sim N (\mu_0, \sigma^2/\kappa_0) \\
+\sigma^2 &\sim \text{Inv-} \chi^2 (\nu_0, \sigma_0^2)
+\end{align*}
+
+Notice the formula for $\text{Inv-}\chi^2 (\nu, s^2)$ is $$p(\theta) \propto s^{\nu} \theta^{-(\nu/2 + 1)} e^{1/(2\theta)}$$ and $\text{N-Inv-} {\chi}^2 (\mu, \sigma^2 | \mu_0, \sigma_0^2/\kappa_0; \nu_0, \sigma_0^2)$ $$p(\mu, \sigma^2) \propto \sigma^{-1} (\sigma^2)^{-(\nu_0/2 + 1)} \exp \left (-\frac{1}{2\sigma^2} [\nu_0 \sigma_0^2 + \kappa_0 (\mu_0 - \mu)^2] \right)$$
+
+Therefore, the posterior 
+\begin{align*}
+p(\mu, \sigma^2 | y) &\propto  p(\mu, \sigma^2) \prod_{i=1}^n p(y_i | \mu, \sigma^2) \\
+	&= \sigma^{-1} (\sigma^2)^{-(\nu_0/2 + 1)} \exp \left (-\frac{1}{2\sigma^2} [\nu_0 \sigma_0^2 + \kappa_0 (\mu_0 - \mu)^2] \right) \times \\
+	& \qquad (\sigma^2)^{-n/2} \exp \left ( -\frac{1}{2\sigma^2}[(n-1)s^2 + n (\bar y - \mu)^2] \right )
+\end{align*}
+
+\textit{The rest arithmetic is rather dull, but I guess it's good to do it at least once.}
+
+First, merge the terms outside the $\exp(\cdots)$:
+$$
+\sigma^{-1} \sigma^{-\left( (\nu_0 + n)/ 2 + 1 \right)}
+$$
+
+Let's focus on the terms inside $\exp (\cdots)$, discarding the exponential:
+\begin{align*}
+&\quad -\frac{1}{2\sigma^2} [\nu_0 \sigma_0^2 + \kappa_0 (\mu_0 - \mu)^2] -\frac{1}{2\sigma^2}[(n-1)s^2 + n (\bar y - \mu)^2] \\
+&= -\frac{1}{2\sigma^2} \left ( \nu_0\sigma_0^2 + (n-1)s^2 + \kappa_0 (\mu_0 - \mu)^2 + n (\bar y - \mu)^2 \right) \\
+&= -\frac{1}{2\sigma^2} \left ( \nu_0\sigma_0^2 + (n-1)s^2  + \kappa_0 \mu_0^2 + n {\bar y}^2 + (\kappa_0 + n) \mu^2 - 2(\kappa_0 \mu_0 + n \bar y) \mu \right ) \\
+&= -\frac{1}{2\sigma^2} \left ( \nu_0\sigma_0^2 + (n-1)s^2  + \kappa_0 \mu_0^2 + n {\bar y}^2 + (\kappa_0 + n) \left( \mu - \frac{\kappa_0 \mu_0 + n \bar y}{\kappa_0 + n} \right) ^2  - \frac{(\kappa_0 \mu_0 + n \bar y)^2}{\kappa_0 + n}\right ) \\
+&= -\frac{1}{2\sigma^2} \left ( \nu_0\sigma_0^2 + (n-1)s^2  + \frac{\kappa_0 n}{\kappa_0 + n} (\bar y - \mu_0)^2  +  (\kappa_0 + n) \left( \mu - \frac{\kappa_0 \mu_0 + n \bar y}{\kappa_0 + n} \right) ^2 \right)
+\end{align*}
+
+Let 
+\begin{align*}
+\mu_n &= \frac{\kappa_0}{\kappa_0 + n} \mu_0 + \frac{n}{\kappa_0 + n} \bar y  \\
+\kappa_n &= \kappa_0 + n \\
+\nu_n &= \nu_0 + n \\
+\nu_n \sigma_n^2 &= \nu_0\sigma_0^2 + (n-1)s^2  + \frac{\kappa_0 n}{\kappa_0 + n} (\bar y - \mu_0)^2
+\end{align*}
+, then
+$$
+p(\mu, \sigma^2 | y) = \text{N-Inv-} \chi^2 (\mu, \sigma^2 | \mu_n, \sigma_n^2 / \kappa_n; \nu_n, \sigma_n^2)
+$$
+
+
+
+% -----------------------------------------------------
+% End
+% -----------------------------------------------------
+\end{itemize}
+\end{document}
