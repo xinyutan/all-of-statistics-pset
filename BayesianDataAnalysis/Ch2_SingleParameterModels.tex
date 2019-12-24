@@ -1,15 +1,19 @@
 \documentclass{article}
 
-\usepackage[margin=0.6in]{geometry} % Please keep the margins at 1.5 so that there is space for grader comments.
+\usepackage[margin=0.6in]{geometry} 
+
 \usepackage{amsmath,amsthm,amssymb,hyperref}
+
 \usepackage{graphicx}
 \usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
 
 \newcommand{\R}{\mathbf{R}}  
 \newcommand{\Z}{\mathbf{Z}}
 \newcommand{\N}{\mathbf{N}}
 \newcommand{\Q}{\mathbf{Q}}
 \newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
 
 \newenvironment{theorem}[2][Theorem]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
@@ -61,7 +65,7 @@ p(\theta | y < 3) &\propto p(\theta) p(y < 3 | \theta) \\
 Density plot:
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=5in]{{code/Ch2_1.png}} 
+   \includegraphics[width=5in]{{code/ch2/Ch2_1.png}} 
 \end{figure}
 
 % -----------------------------------------------------
@@ -125,6 +129,62 @@ In a similar fashion, we can show that when $\frac{\alpha}{\alpha + \beta} < \fr
 
 \end{enumerate}
 
+
+% -----------------------------------------------------
+% 7th problem
+% -----------------------------------------------------
+\item \textbf{7. Noninformative prior densities}
+\begin{enumerate}[(a)]
+
+\item Let $\phi$ be the natural parameter of $\theta$, $\phi = \text{logit}(\theta) = \log \frac{\theta}{1-\theta}$, then $\theta = \frac{e^{\phi}}{1 + e^{\phi}}$.
+$$
+p(\phi) = p(\theta) \left | \frac{d\theta}{d\phi} \right| \propto \frac{1}{\theta(1-\theta)} \frac{e^{\phi}}{(1+e^{\phi})^2} = \frac{1}{\theta(1-\theta)} \theta (1-\theta) = 1
+$$
+Hence, $\phi$ has uniform prior.
+
+\end{enumerate}
+
+% -----------------------------------------------------
+% 9th problem
+% -----------------------------------------------------
+\item \textbf{9. Discrete sample spaces}
+\begin{enumerate}[(a)]
+
+\item The likelihood that I observed a car plate numbered 203 is 
+$$p(y=203|N) = \begin{cases} 1/N, &N\geq 203 \\ 0, &\text{otherwise}\end{cases}$$
+
+The posterior distribution hence is
+$$
+p(N|y=203) \propto \begin{cases}
+0.99^{N} N^{-1}, &N\geq 203 \\
+0, &\text{o.w.}
+\end{cases}
+$$
+
+\item First, we need to find the constant that normalize the posterior distribution. 
+$$
+1 = \sum_{n=203}^{\infty} c \times 0.99^{n} n^{-1} \Rightarrow c = 21.47
+$$
+\textit{[I didn't think of error analysis first.]}
+
+I estimated the $c$ by adding $n$ from 203 to 20000, the error
+$$
+\epsilon = \sum_{n=20001}^{\infty} 0.99^{n} n^{-1} \leq \frac{1}{20001} \sum_{n=20001}^{\infty} 0.99^{n} = \frac{1}{20001} \frac{0.99^{20001}}{1-0.99} \approx 2.5\times10^{-90}
+$$
+So error is very small. 
+
+$$
+\E{(N)} = \sum_{n=203}^{\infty} np(n|y) = \sum_{n=203}^{\infty} nc0.99^nn^{-1} = 279.1
+$$
+and
+\begin{align*}
+\text{std}(N) &= \sqrt{\sum_{n=203}^{\infty}(n-279.1)^2 \cdot 21.47 \cdot 0.99^n n^{-1}} \\
+&\approx 79.97
+\end{align*}
+
+\end{enumerate}
+
+
 % -----------------------------------------------------
 % 18th problem
 % -----------------------------------------------------
@@ -152,10 +212,11 @@ Hence, $$p(\theta|y) = Gamma(\sum_{i=1}^n y_i + \alpha, \sum_{i=1}^n x_i+\beta)$
 \begin{enumerate}[(a)]
 
 % a
-\item If $y|\theta$ is exponentially distributed with rate $\theta$ and given gamma prior distribution, then
+\item Given an i.i.d sample of y values and gamma prior distribution, then
 $$
-p(\theta|y) \propto \theta e^{-y\theta} \theta^{\alpha - 1} e^{-\beta \theta} = \theta^{\alpha} e^{-(y+\beta)\theta} \sim Gamma(\alpha + 1, y+\beta)
+p(\theta|y) \propto \theta^n e^{-n \bar y \theta} \theta^{\alpha - 1} e^{-\beta \theta} = \theta^{\alpha+n -1} e^{-(n \bar y+\beta)\theta} \sim Gamma(\alpha + n, n \bar y+\beta)
 $$
+where $\bar y = \frac{1}{n} \sum_{i=1}^n y_i$
 Therefore, gamma prior is conjugate for inferences about $\theta$. 
 
 % b
@@ -165,13 +226,42 @@ p(\phi) \propto \phi^{-(\alpha+1)}e^{-\beta / \phi}
 $$
 Posterior distribution of $\phi$:
 $$
-p(\phi | y) \propto p(\phi) p(y|\phi) = \phi^{-(\alpha+2)}e^{-(\beta+y) / \phi} \sim \text{Inv-}Gamma (\alpha+1, \beta+y)
+p(\phi | y) \propto p(\phi) p(y|\phi) = \phi^{-(\alpha+n+1)}e^{-(\beta+n \bar y) / \phi} \sim \text{Inv-}Gamma (\alpha+n, \beta+n\bar y)
 $$
 
 % c
+\item The length of life of a light bulb  manufactured by a certain process has an exponential distribution with unknown rate $\theta$. 
 
+For prior distribution 
+$$
+0.5 = \frac{\text{std}(\theta)}{\text{avg}(\theta)} = \frac{\sqrt{\alpha/\beta^2}}{\alpha/\beta} = \frac{1}{\sqrt{\alpha}} \Rightarrow \alpha = 4
+$$
+
+Suppose we need $n$ more samples to have the posterior distribution's coefficient of variation reduce to 0.1:
+$$
+0.1 = \frac{1}{\sqrt{\alpha+n}} \Rightarrow n = 96
+$$
+
+%d 
+\item If in part (c), the coefficient of variation refers to $\phi$, then
+$$
+0.5 = \frac{\sqrt{\frac{\beta^2}{(\alpha-1)^2(\alpha-2)}}}{\frac{\beta}{\alpha-1}} = \frac{1}{\sqrt{\alpha-2}} \Rightarrow \alpha = 6
+$$
+
+For posterior:
+$$
+0.1 = \frac{1}{\sqrt{\alpha+n-2}} \Rightarrow n = 96
+$$
 
 \end{enumerate}
+
+% -----------------------------------------------------
+% 21st problem
+% -----------------------------------------------------
+\item \textbf{21. Simple hierarchical modeling}
+
+Check the ipython notebook
+
 % -----------------------------------------------------
 % End
 % -----------------------------------------------------
