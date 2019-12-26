@@ -55,6 +55,61 @@
 \begin{itemize}
 
 % -----------------------------------------------------
+% Ex. 1
+% -----------------------------------------------------
+\item \textbf{1. Binomial and multinomial models}
+\begin{enumerate}[(a)]
+% a
+\item marginal posterior distribution for $\alpha = \frac{\theta_1}{\theta_1 + \theta_2}$.
+
+Suppose that the prior distribution for $\theta = (\theta_1, \theta_2, \cdots, \theta_J) \sim \text{Dirichlet} (a_1, \cdots, a_J)$.  The posterior distribution is
+\begin{align*}
+\theta_1, \cdots, \theta_J | y &\propto \theta_1^{y_1+a_1-1} \cdots \theta_n^{y_J+a_J-1} \\
+&\sim \text{Dirichlet} (y_1+a_1, \cdots, y_J+a_J)
+\end{align*}
+
+From the appendix A, the marginal of $(\theta_1, \theta_2, 1-\theta_1-\theta_2) \sim \text{Dirichlet}(y_1+a_1, y_2+a_2,  y_r + a_r)$, where $y_r = y_3 + \cdots+y_J$ and $a_r = a_3 + \cdots + a_J$.
+
+Let $\alpha = h(\theta_1, \theta_2) = \frac{\theta_1}{\theta_1 + \theta_2}$ and $\beta = g(\theta_1, \theta_2) = \theta_1 + \theta_2$, then $\theta_1 = \alpha\beta$ and $\theta_2 = \beta(1-\alpha)$.
+\begin{align*}
+\alpha, \beta | y &\propto (\alpha\beta)^{a_1+y_1-1} (\beta(1-\alpha))^{a_2+y_2-1} (1-\beta)^{a_r+y_r -1} \begin{vmatrix} \frac{\partial h}{\partial \theta_1} & \frac{\partial h}{\partial \theta_2} \\ \frac{\partial g}{\partial \theta_1}  & \frac{\partial h}{\partial \theta_2} \end{vmatrix}^{-1} \\
+&= \alpha^{a_1+y_1-1} (1-\alpha)^{a_2+y_2-1} \beta^{a_1+a_2+y_1+y_2-1} (1-\beta)^{a_r+y_r-1} \\
+&\sim \text{Beta} (\alpha | a_1+y_1, a_2+y_2) \text{Beta}(\beta | a_1+a_2+y_1+y_2, a_r+y_r) 
+\end{align*}
+
+Since $\alpha$ and $\beta$ belong to separate factors, they are independent: $\alpha \sim \text{Beta}(a_1+y_1, a_2+y_2)$.
+
+\end{enumerate}
+
+% -----------------------------------------------------
+% Ex. 2
+% -----------------------------------------------------
+\item \textbf{2. Comparison of two multinomial observations}
+
+Suppose a uniform prior distribution, then the posterior distribution of $\theta_b, \theta_d, \theta_o$ for pre and post debate are
+\begin{align}
+(\theta_{b1}, \theta_{d1}, \theta_{o1}) \sim \text{Dirichlet} (294, 307, 38) \\
+(\theta_{b2}, \theta_{d2}, \theta_{o2}) \sim \text{Dirichlet} (288, 332, 19)
+\end{align}
+
+From Ex1, we know that the posterior distribution for $\theta_b, \theta_b$ follows $\text{Beta}(y_b, y_d)$, then 
+\begin{align}
+\alpha_1 \sim \text{Beta}(294, 307) \\
+\alpha_2 \sim \text{Beta}(288, 332)
+\end{align}
+
+The histogram is shown \ref{fig:figure1}.
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{{code/ch3/ch3_2.png}} 
+   \caption{Histogram for Ex3}
+   \label{fig:figure1}
+\end{figure}
+
+
+The posterior probability that there is a shift toward Bush: $p(\alpha_2 > \alpha_1) \Rightarrow p(\alpha_2 - \alpha_1 > 0) = 0.1898$.
+
+% -----------------------------------------------------
 % Ex. 9
 % -----------------------------------------------------
 
