@@ -102,12 +102,90 @@ The histogram is shown \ref{fig:figure1}.
 \begin{figure}[h] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=5in]{{code/ch3/ch3_2.png}} 
-   \caption{Histogram for Ex3}
+   \caption{Histogram for Ex2}
    \label{fig:figure1}
 \end{figure}
 
 
 The posterior probability that there is a shift toward Bush: $p(\alpha_2 > \alpha_1) \Rightarrow p(\alpha_2 - \alpha_1 > 0) = 0.1898$.
+
+% -----------------------------------------------------
+% Ex. 3
+% -----------------------------------------------------
+\item \textbf{3. Estimation from two independent experiments}
+
+\begin{enumerate}[(a)]
+\item Since control and experiment groups are independent, we can model them separately. Given a noninformative prior, from Section 3.2, we have
+$$
+p(\mu|y) \sim t_{n-1}(\bar y, \frac{s^2}{n})
+$$
+
+Control group: $\mu_c = 1.013, s_c= 0.24, n_c= 32$, posterior distribution of $\mu_c$
+$$
+\mu_c | y \sim t_{31}(1.013, 0.24^2/32) 
+$$
+
+Treated group: $\mu_t = 1.173, s_t= 0.20, n_t = 36$, posterior distribution of $\mu_t$
+$$
+\mu_t | y \sim t_{35}(1.173, 0.20^2/36)
+$$
+
+\item Posterior distribution for the difference $\mu_t - \mu_c$. Sampling from the independent $t$ distributions, we have the histogram, show in \ref{fig:ex3}:
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{{code/ch3/ch3_3.png}} 
+   \caption{Histogram for Ex3}
+   \label{fig:ex3}
+\end{figure}
+
+\end{enumerate}
+
+% -----------------------------------------------------
+% Ex. 5
+% -----------------------------------------------------
+\item \textbf{5. Rounded data}
+
+\begin{enumerate}[(a)]
+\item If we pretend that the observations are exact unrounded measurements, with noninformative prior distribution on the mean $\mu$ and variance $\sigma^2$, posterior distribution should follow Eq. 3.2
+$$
+p(\mu, \sigma^2 | y) \sim \sigma^{-n-2} \exp \left(-\frac{1}{2\sigma^2} [(n-1) s^2 + n (\bar y - \mu)^2] \right)
+$$
+where $n=5$, $\bar y = 10.4$ and $s^2 = 1.3$.
+
+\item Treat the measurements as rounded. 
+
+Denote $\tilde y$ the rounded, observed measurement, $y$ the exact measurement. Since the observed is rounded to the nearest integer, we have
+$$
+\tilde y | y \sim I(\tilde y - 0.5 \leq y \leq  \tilde y + 0.5)
+$$
+where $I(x) = \begin{cases} 1, &x = \text{true} \\ 0, &x = \text{false} \end{cases}$. $y$, unobserved, is sampled from the normal distribution, 
+$$
+y | \mu, \sigma^2 \sim N(\mu, \sigma^2)
+$$
+
+Hence, we have 
+$$
+\tilde y, y | \mu, \sigma^2 \propto p(\tilde y | y, \mu, \sigma^2) p(y|\mu, \sigma^2) = p(\tilde y | y ) p(y|\mu, \sigma^2) 
+$$
+Integral over $y$, we have
+\begin{align*}
+\tilde y | \mu, \sigma^2 &\propto \int p(\tilde y | y ) p(y|\mu, \sigma^2) dy \\
+&= \int I(\tilde y - 0.5 \leq y \leq  \tilde y + 0.5)N(y|\mu, \sigma^2) dy \\
+&= \int_{\tilde y-0.5}^{\tilde y+0.5} N(y|\mu, \sigma^2) dy \\
+&= \Phi (\tilde y + 0.5 | \mu, \sigma^2) - \Phi (\tilde y - 0.5 | \mu, \sigma^2) \\
+&= \Phi \left(\frac{\tilde y + 0.5 - \mu}{\sigma} \right) - \Phi \left ( \frac{\tilde y - 0.5 - \mu}{\sigma} \right )
+\end{align*}
+where $\Phi(x) = \Phi(x | 0, 1)$.
+
+Then, the posterior distribution
+\begin{align*}
+\mu, \sigma^2 | \tilde y &\propto p(\mu, \sigma^2) p(\tilde y | \mu, \sigma^2) \\
+&=  \sigma^{-2} \prod_{i=1}^5 \left ( \Phi \left(\frac{\tilde {y_i} + 0.5 - \mu}{\sigma} \right) - \Phi \left ( \frac{\tilde {y_i} - 0.5 - \mu}{\sigma} \right ) \right )
+\end{align*}
+
+\item The difference between incorrect (a) and correct (b) posterior distributions.  
+
+\end{enumerate}
 
 % -----------------------------------------------------
 % Ex. 9
