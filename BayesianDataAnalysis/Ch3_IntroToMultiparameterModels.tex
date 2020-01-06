@@ -1,5 +1,4 @@
 \documentclass{article}
-
 \usepackage[margin=0.6in]{geometry} 
 
 \usepackage{amsmath,amsthm,amssymb,hyperref}
@@ -184,7 +183,60 @@ Then, the posterior distribution
 \end{align*}
 
 \item The difference between incorrect (a) and correct (b) posterior distributions.  
+The contour plot of posterior probability at a grid $(\mu, \log \sigma) \in [8, 12] \times [-1, 1]$ is shown in figure \ref{fig:ex5}
 
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=7in]{{code/ch3/ch3_5.png}} 
+   \caption{Contour plot for Ex5.c}
+   \label{fig:ex5}
+\end{figure}
+
+The summary statistics are:
+
+Incorrect posterior $\mu$ - mean:10.4         variance:0.214
+
+Incorrect posterior $\sigma$ - mean: 1.2          variance: 0.128
+
+Correct posterior $\mu$ - mean: 10.4          variance:0.175
+
+Correct posterior $\sigma$ - mean: 0.96   variance:0.112
+
+\end{enumerate}
+
+
+% -----------------------------------------------------
+% Ex. 6
+% -----------------------------------------------------
+\item \textbf{6. Binomial with unknown probability and sample size}
+
+\begin{enumerate}[(a)]
+  \item Assume the noninformative prior distribution is $p(\lambda, \theta) \propto \lambda^{-1}$, where $\lambda = \mu \theta$. Therefore, we have $p(\mu, \theta) = \theta \cdot \frac{1}{\mu \theta} = \mu^{-1}$.
+  This prior is improper. (exponential integral: \url{https://en.wikipedia.org/wiki/List_of_integrals_of_exponential_functions})
+   \begin{align*}
+   p(N, \theta)  &= \int_{0}^{\infty} p(N, \mu, \theta) d\mu \\
+   	&= \int p(N|\mu, \theta) p(\mu, \theta) d\mu \\
+	&= \int \frac{1}{N!} \mu^{N} e^{-\mu} \mu^{-1} d\mu = \frac{(N-1)!}{N!} = \frac{1}{N}
+   \end{align*}
+ 
+ \item $y \sim \text{Bin}(N, \theta)$, the likelihood 
+  $$
+  p(y) = \binom{N}{y} \theta^y (1-\theta)^{N-y} 
+  $$
+  
+  The posterior distribution for $N$ and $\theta$:
+  \begin{align*}
+  	p(N, \theta|Y) \propto \frac{1}{N} \left (\prod_{i=0}^n  \binom{N}{y_i} \theta^y_i (1-\theta)^{N-y_i} \right ) I(N \geq \max_{i=1}^n y_i)
+  \end{align*}
+where $Y = (53, 57, 66, 67, 72)$
+The contour plot and the scatterplot of the posterior simulations are in figure \ref{fig:ex6}. By simulation, the posterior probability that $N>100$ is $0.952$.
+
+\begin{figure}[h] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{{code/ch3/ch3_6.png}} 
+   \caption{Contour plot and scatterplot for Ex6.b}
+   \label{fig:ex6}
+\end{figure}
 \end{enumerate}
 
 % -----------------------------------------------------
