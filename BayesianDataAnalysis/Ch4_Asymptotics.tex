@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage[margin=0.6in]{geometry} 
+
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
+
+\newcommand{\R}{\mathbf{R}}  
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+
+\large % please keep the text at this size for ease of reading.
+
+% ------------------------------------------ %
+%                 START HERE             %
+% ------------------------------------------ %
+
+{\Large Page 98 % Replace with appropriate page number 
+\hfill  Ch4, Asymptotics and Connections to Non-Bayesian Approaches}
+
+\begin{center}
+{\Large Xinyu Tan} 
+\end{center}
+\vspace{0.05in}
+
+% -----------------------------------------------------
+% The "enumerate" environment allows for automatic problem numbering.
+% To make the number for the next problem, type " \item ". 
+% To make sub-problems such as (a), (b), etc., use an "enumerate" within an "enumerate."
+% -----------------------------------------------------
+ \renewcommand{\labelitemi}{$\textendash$}
+\begin{itemize}
+
+% -----------------------------------------------------
+% Ex. 1
+% -----------------------------------------------------
+\item \textbf{1. Normal Approximations}
+  \begin{enumerate}[(a)]
+    \item Log posterior density:
+      \begin{align*}
+      \log p(\theta|y_1, \cdots, y_5) &= \log p(\theta) \log (y1, \cdots, y_5 | \theta) \\
+      &= \sum_{i=1}^5 \log p(y_i | \theta) \propto \sum_{i=1}^5 \log {\frac{1}{1 + (y_i - \theta)^2}} \\
+      &= -\sum_{i=1}^5 \log \left(1 + (y_i - \theta)^2 \right) 
+      \end{align*}
+      
+      Hence, first derivative:
+      $$
+      \frac{d p(\theta|y)}{d\theta} = 2 \sum_{i=1}^5 \frac{y_i - \theta}{1+(y_i-\theta)^2}
+      $$
+      Second derivative:
+      $$
+      \frac{d^2 p(\theta|y)}{d\theta^2} = 2 \sum_{i=1}^5 \frac{(y_i-\theta)^2 - 1}{(y_i - \theta)^2 + 1}
+      $$
+    
+     \item The posterior mode $ \hat \theta = -0.125$
+     
+     \item The posterior normal approximation:
+      \begin{align*}
+       \log p(\theta|y) &\approx p(\hat \theta | y) + \frac{1}{2} (\theta - \hat \theta)^2 \times \left[ \frac{d^2p(\theta|y)}{d\theta^2} \right]_{\theta = \hat \theta} \\
+       &= -5.45 + \frac{1}{2} \times 1.30 \times (\theta + 0.125)^2 
+     \end{align*}
+     Therefore, the approximated posterior distribution is $\theta | y \sim N(-0.125, 0.877^2)$. 
+    \end{enumerate}
+
+% -----------------------------------------------------
+% Ex. 2
+% -----------------------------------------------------
+\item \textbf{2. Normal Approximation}
+
+ Note: \textit{Trivial arithmetic}
+
+In bioassay example, we have the posterior 
+$$
+p(\alpha, \beta | y) = \prod_{i=1}^4 \text{logit}^{-1} (\alpha + \beta x_i)^{y_i} \left(1 - \text{logit}^{-1}(\alpha + \beta x_i) \right)^{n_i-y_i}
+$$
+
+Denote $\text{logit}^{-1}(x)$ to be $f(x)$; hence, $f(x) = 1/\left(1 + e^{-x}\right)$, the derivative $df(x)/dx = (1 - f) f$. Using $f(x)$, the log likelihood:
+$$
+\log p(\alpha, \beta | y) = \sum_{i=1}^4 y_i \log f(\alpha + \beta x_i) + (n_i - y_i) \log \left (1 - f(\alpha + \beta x_i) \right)
+$$
+
+First compute mode:
+\begin{align*}
+  \frac{\partial \log p(\alpha, \beta | y)}{\partial \alpha} &= \sum_{i=1}^4 y_i - n_i f(\alpha + \beta x_i) \\
+  \frac{\partial \log p(\alpha, \beta | y)}{\partial \beta} &= \sum_{i=1}^4 x_i(y_i - n_i f(\alpha + \beta x_i))
+\end{align*}
+
+Second derivative:
+\begin{align}
+  \frac{\partial^2 \log p(\alpha, \beta | y)}{\partial \alpha^2} &= -\sum_{i=1}^4 n_i f(\alpha + \beta x_i) \left ( 1 - f(\alpha + \beta x_i) \right ) \\
+  \frac{\partial^2 \log p(\alpha, \beta | y)}{\partial \alpha \partial \beta} &= - \sum_{i=1}^4 n_i x_i f(\alpha + \beta x_i) ( 1 - f(\alpha + \beta x_i)) \\
+  \frac{\partial^2 \log p(\alpha, \beta | y)}{\partial \alpha \partial \beta} &= - \sum_{i=1}^4 n_i x_i^2 f(\alpha + \beta x_i) (1 - f(\alpha + \beta x_i))
+\end{align}
+
+The information matrix
+$$
+I(\alpha, \beta) = \begin{bmatrix} \sum_{i=1}^4 n_i f(\alpha + \beta x_i) \left ( 1 - f(\alpha + \beta x_i) \right) && \sum_{i=1}^4 n_i x_i f(\alpha + \beta x_i) ( 1 - f(\alpha + \beta x_i)) \\ 
+\sum_{i=1}^4 n_i x_i f(\alpha + \beta x_i) ( 1 - f(\alpha + \beta x_i)) &&  \sum_{i=1}^4 n_i x_i^2 f(\alpha + \beta x_i) (1 - f(\alpha + \beta x_i)) \end{bmatrix}
+$$
+
+% -----------------------------------------------------
+% End
+% -----------------------------------------------------
+\end{itemize}
+\end{document}
