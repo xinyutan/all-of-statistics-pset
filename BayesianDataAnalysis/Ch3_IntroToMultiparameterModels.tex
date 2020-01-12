@@ -231,7 +231,7 @@ Correct posterior $\sigma$ - mean: 0.96   variance:0.112
 where $Y = (53, 57, 66, 67, 72)$
 The contour plot and the scatterplot of the posterior simulations are in figure \ref{fig:ex6}. By simulation, the posterior probability that $N>100$ is $0.952$.
 
-\begin{figure}[h] %  figure placement: here, top, bottom, or page
+\begin{figure}[p] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=5in]{{code/ch3/ch3_6.png}} 
    \caption{Contour plot and scatterplot for Ex6.b}
@@ -294,7 +294,47 @@ $$
 p(\mu, \sigma^2 | y) = \text{N-Inv-} \chi^2 (\mu, \sigma^2 | \mu_n, \sigma_n^2 / \kappa_n; \nu_n, \sigma_n^2)
 $$
 
+% -----------------------------------------------------
+% Ex. 11
+% -----------------------------------------------------
 
+\item \textbf{11. Computation}
+
+\begin{enumerate}[(a)] 
+
+\item $\alpha \sim N(0, 2^2)$, $\beta \sim N(10, 10^2)$, and $\rho = \text{corr}(\alpha, \beta) = 0.5$. Hence, the prior 
+\begin{align*}
+p(\alpha, \beta) &= \frac{1}{2\pi \sigma_{\alpha}\sigma_{\beta} \sqrt{1-\rho^2}} \exp \left( -\frac{1}{1-\rho^2} \left[ \frac{(\alpha- \mu_{\alpha})^2}{\sigma_{\alpha}^2}  + \frac{(\beta- \mu_{\beta})^2}{\sigma_{\beta}^2} - \frac{2\rho (\alpha-\mu_{\sigma}) (\beta -\mu_{\beta})}{\sigma_{\alpha} \sigma_{\beta}} \right]\right)
+\end{align*}
+where $\mu_{\alpha} =0$, $\mu_{\beta} = 10$, $\sigma_{\alpha} =2$, $\sigma_{\beta} = 10$.
+
+Likelihood:
+$$
+p(y_i|\alpha, \beta, x_i, n_i) \propto [\text{logit}^{-1} (\alpha + \beta x_i)]^{y_i} [1 - \text{logit}^{-1} (\alpha + \beta x_i)]^{n_i - y_i}
+$$
+where $\text{logit}^{-1}(x) = \frac{1}{1+e^{-x}}$.
+
+\item The contour plot and scattor plot of the posterior distribution is shown in figure \ref{fig:ex11}. The posterior distribution of the LD50 is shown in figure \ref{fig:ex11_2}.
+
+Here, with a normal prior on $\alpha$ and $\beta$, we have all posterior samples $\beta > 0$, meaning that the drug is harmful with probablity $>0.9993$.
+
+
+\begin{figure}[p] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=3in]{{code/ch3/ch3_11_1.png}} 
+   \caption{Contour plot and scatterplot for Ex11.b}
+   \label{fig:ex11}
+\end{figure}
+
+\begin{figure}[p] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{{code/ch3/ch3_11_2.png}} 
+   \caption{Histogram of the draws from posterior distribution of the LD50 (on the scale of $\log$ dose $g/ml$)}
+   \label{fig:ex11_2}
+\end{figure}
+
+
+\end{enumerate}
 
 % -----------------------------------------------------
 % End

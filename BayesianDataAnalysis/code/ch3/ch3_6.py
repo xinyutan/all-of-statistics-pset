@@ -8,6 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import binom
 
+from util import draw_sample_from_marginal, draw_2nd_var_from_joint, add_jitter
+
+
 def calculate_posterior(N_grid, theta_grid, data):
     m, n = N_grid.shape
     extend_data = np.repeat(data[:, np.newaxis], m, axis=1)
@@ -17,26 +20,6 @@ def calculate_posterior(N_grid, theta_grid, data):
                                 * (1-theta_grid) ** (N_grid - extend_data), axis=0) \
         * (N_grid > data.max())
 
-
-def add_jitter(x, width):
-    return np.random.uniform(x - width / 2, x + width / 2)
-
-
-def draw_sample(values, pmf):
-    cdf = np.array(pmf)
-    for i in range(1, pmf.shape[0]):
-        cdf[i] += cdf[i-1]
-    u = np.random.uniform()
-    ind = np.where(cdf==u)[0]
-    if len(ind) > 0:
-        return values[ind], ind
-    ind_l, ind_r = np.where(cdf < u)[0][-1], np.where(cdf > u)[0][0]
-    return values[(ind_l + ind_r) // 2], (ind_l + ind_r) // 2
-
-def draw_theta(values, posterior, n_ind):
-    marginal = posterior[:, n_ind]
-    marginal = marginal / marginal.sum()
-    return draw_sample(values, marginal)
 
 if __name__ == '__main__':
     # calculate the posterior distribution
@@ -54,8 +37,8 @@ if __name__ == '__main__':
     N_marginal = posterior.sum(axis=0)
     samples = {'N': [], 'theta': []}
     for s in range(1000):
-        n, n_id = draw_sample(Ns, N_marginal)
-        t, t_id = draw_theta(thetas, posterior, n_id)
+        n, n_id = draw_sample_from_marginal(Ns, N_marginal)
+        t, t_id = draw_2nd_var_from_joint(thetas, posterior, n_id)
         n_, t_ = add_jitter(n, 1), add_jitter(t, thetas[1] - thetas[0])
         samples['N'].append(n_)
         samples['theta'].append(t_)
@@ -78,4 +61,4 @@ if __name__ == '__main__':
 
     # probability that N > 100
     id_100 = np.where(Ns==100)[0][0]
-    print("probablility that N > 100 = {}".format(np.sum(N_marginal[id_100+1:])))
+    print("probability that N > 100 = {}".format(np.sum(N_marginal[id_100+1:])))
