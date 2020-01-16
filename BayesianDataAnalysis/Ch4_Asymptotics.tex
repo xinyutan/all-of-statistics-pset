@@ -121,6 +121,62 @@ I(\alpha, \beta) = \begin{bmatrix} \sum_{i=1}^4 n_i f(\alpha + \beta x_i) \left 
 $$
 
 % -----------------------------------------------------
+% Ex. 9
+% -----------------------------------------------------
+\item \textbf{9. Point estimation}
+
+  \textit{I did not figure this problem out. I looked at the answer key. And then the following is my understanding from the answer. This is a really nice problem - linking many concepts together.}
+\\
+\\
+Suppose the measurement is $\hat y$. The likelihood
+$$
+\phi (\theta) = p(\hat y|\theta) = \frac{1}{\sqrt{2 \pi} \sigma} \text{exp} \left(-\frac{1}{2\sigma^2} (\hat y - \theta)^2 \right)
+$$
+
+\fbox {\begin{minipage}{40em}
+\textit{here is a part I did not think of. So basically, it should be assumed that when $\theta<0$, with $\theta \in [0, 1]$, then $p(\theta < 0)$ should be assigned to $p(\theta = 0)$.}
+\end{minipage}
+}
+
+Then, 
+\begin{align*}
+\phi (\theta = 0) &= \int_{-\infty}^0\frac{1}{\sqrt{2 \pi} \sigma} \text{exp} \left(-\frac{1}{2\sigma^2} (\hat y - \theta)^2 \right) d\theta \\
+&= \frac{1}{2} \left (1 + \text{erf} \left( \frac{-\hat y}{\sigma \sqrt 2}\right) \right)
+\end{align*}
+and 
+\begin{align*}
+\phi (\theta = 1) &= \int_1^{\infty}\frac{1}{\sqrt{2 \pi} \sigma} \text{exp} \left(-\frac{1}{2\sigma^2} (\hat y - \theta)^2 \right) d\theta \\
+&= 1 - \frac{1}{2} \left (1 + \text{erf} \left( \frac{1 -\hat y}{\sigma \sqrt 2}\right) \right)
+\end{align*}
+
+$\text{erf}(0) = 0$, then when $\sigma \rightarrow \infty$, $\phi(0) \rightarrow 1/2$ and $\phi(1) \rightarrow 1/2$.
+
+Therefore, in the case of max likelihood, we have $\theta$'s estimate to be either 1 or 0: 
+$$
+\text{MSE}_1 = 0.5 \times \theta^2 + 0.5 \times (1 - \theta)^2 = \frac{1}{2}(1 - 2 \theta + 2 \theta^2)
+$$
+
+Posterior distribution:
+$$
+\psi(\theta) = p(\theta| \hat y) \propto I(0\leq \theta \leq 1) \frac{1}{\sqrt{2 \pi} \sigma} \text{exp} \left(-\frac{1}{2\sigma^2} (\hat y - \theta)^2 \right)
+$$
+
+The posterior mean 
+\begin{align*}
+  \bar \theta &= \frac{\int_0^1 \theta \psi(\theta) d\theta}{\int_0^1 \psi(\theta) d\theta} \\
+   &\approx \int_0^1 \theta d\theta \quad \quad (\sigma \rightarrow \infty) \\ &= \frac{1}{2}
+\end{align*}
+
+Hence, 
+$$\text{MLE}_2 = (0.5 - \theta)^2 = \frac{1}{2}\left( \frac{1}{2} - 2 \theta + 2 \theta^2 \right) < \text{MLE}_1
+$$
+where $\theta \in [0,1]$
+
+% -----------------------------------------------------
+% Ex. 10
+% -----------------------------------------------------
+
+% -----------------------------------------------------
 % End
 % -----------------------------------------------------
 \end{itemize}
