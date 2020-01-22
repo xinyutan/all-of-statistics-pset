@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage[margin=0.6in]{geometry} 
+
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
+
+\newcommand{\R}{\mathbf{R}}  
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+
+\large % please keep the text at this size for ease of reading.
+
+% ------------------------------------------ %
+%                 START HERE             %
+% ------------------------------------------ %
+
+{\Large Page 134 % Replace with appropriate page number 
+\hfill  Ch5, Hierarchical Models}
+
+\begin{center}
+{\Large Xinyu Tan} 
+\end{center}
+\vspace{0.05in}
+
+% -----------------------------------------------------
+% The "enumerate" environment allows for automatic problem numbering.
+% To make the number for the next problem, type " \item ". 
+% To make sub-problems such as (a), (b), etc., use an "enumerate" within an "enumerate."
+% -----------------------------------------------------
+ \renewcommand{\labelitemi}{$\textendash$}
+\begin{itemize}
+
+% -----------------------------------------------------
+% Ex. 1
+% -----------------------------------------------------
+\item \textbf{1. Exchangeability with known model parameters}
+  \begin{enumerate}[(a)]
+    \item $p(y_1 = \text{b}, y_2 = \text{w}) = p(y_1=\text{w}, y_2=\text{b}) = 1/4$. Observations $y_1$ and $y_2$ are exchangable. We put the balls back, ergo $y_1$ and $y_2$ are independent.
+    \item $y_1$ and $y_2$ are exchangable, but not independent. 
+    \item $y_1$ and $y_2$ are exchangable, but not independent. However, there are 1 million balls for each color, and we only take twice. Hence, we can act as if two observations are independent.
+    \end{enumerate}
+
+% -----------------------------------------------------
+% Ex. 5
+% -----------------------------------------------------
+\item \textbf{5. Mixtures of independent distributions}
+
+  W.L.O.G, let's compute the covariance of $\theta_i$ and $\theta_j$:
+  \begin{align*}
+    \text{cov}(\theta_i, \theta_j) &= \int_{\theta_i} \int_{\theta_j} p(\theta_i, \theta_j) (\theta_i - \mu_i) (\theta_j - \mu_j) d\theta_i d\theta_j \\
+  &=  \int_{\alpha} \int_{\theta_i} \int_{\theta_j} p(\theta_i, \theta_j | \alpha) p(\alpha) (\theta_i - \mu_i) (\theta_j - \mu_j) d\alpha d\theta_i d\theta_j  \\
+  &= \int_{\alpha} \int_{\theta_i} \int_{\theta_j} p(\theta_i|\alpha) (\theta_i - \mu_i) d\theta_i p(\theta_j | \alpha) (\theta_j - \mu_j) d\theta_j p(\alpha) d\alpha \\
+  &= \int_{\alpha} \left(\int_{\theta} p(\theta | \alpha) (\theta - \mu) d\theta \right)^2 p(\alpha) d\alpha \\
+  &\geq 0
+  \end{align*} 
+
+% -----------------------------------------------------
+% Ex. 7
+% -----------------------------------------------------
+\item \textbf{Continuous mixture models}
+  \begin{enumerate}[(a)]
+    \item We have
+      \begin{align*}
+        y | \theta &\sim \frac{1}{y!} \theta^y e^{-\theta} \\
+        \theta | \alpha, \beta &\sim \frac{\beta^{\alpha}}{\Gamma(\alpha)} \theta^{\alpha - 1} e^{-\beta \theta}
+      \end{align*}
+      Therefore, the prior predictive distribution of $y$:
+      \begin{align*}
+        p(y | \alpha, \beta) &= \int_{\theta} p(y, \theta | \alpha, \beta) d\theta \\
+          &= \int_{\theta} p(y | \theta) p(\theta | \alpha, \beta) d\theta \\
+          &= \frac{\beta^{\alpha}}{y!\Gamma(\alpha)} \int \theta^{\alpha + y - 1} e^{-(\beta+1)\theta} d\theta \\
+          &= \frac{\Gamma(\alpha+y)}{y!\Gamma(\alpha)} \frac{\beta^{\alpha}}{(\beta + 1)^{\alpha+y}} \int \frac{(\beta+1)^{\alpha+y}}{\Gamma(\alpha+y)} \theta^{\alpha+y-1} e^{-(\beta+1)\theta} d\theta \\
+         &= \frac{\Gamma(\alpha + y)}{y! \Gamma(\alpha)} \left( \frac{\beta}{\beta+1} \right)^{\alpha} \left( \frac{1}{\beta+1} \right)^y 
+      \end{align*}
+      Hence, the negative binomial. 
+
+      To calculate the mean and variance of $y | \alpha, \beta$, we have
+      $$
+      \mathbb E(y) = \mathbb E \left( \mathbb E(y | \theta) \right) = \mathbb E (\theta) = \frac{\alpha}{\beta}
+      $$
+      and 
+      $$
+      \mathbb V(y) = \mathbb E \left( \mathbb V(y | \theta) \right) + \mathbb V \left ( \mathbb E(\theta | y) \right) = \mathbb E (\theta) + \mathbb V(\theta) = \frac{\alpha}{\beta^2} (\beta + 1)
+      $$
+
+    \end{enumerate}
+
+
+% -----------------------------------------------------
+% End
+% -----------------------------------------------------
+\end{itemize}
+\end{document}
