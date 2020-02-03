@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage[margin=0.6in]{geometry} 
+
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
+
+\newcommand{\R}{\mathbf{R}}  
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+
+\large % please keep the text at this size for ease of reading.
+
+% ------------------------------------------ %
+%                 START HERE             %
+% ------------------------------------------ %
+
+{\Large Page 163 % Replace with appropriate page number 
+\hfill  Ch6. Model Checking}
+
+\begin{center}
+{\Large Xinyu Tan} 
+\end{center}
+\vspace{0.05in}
+
+% -----------------------------------------------------
+% The "enumerate" environment allows for automatic problem numbering.
+% To make the number for the next problem, type " \item ". 
+% To make sub-problems such as (a), (b), etc., use an "enumerate" within an "enumerate."
+% -----------------------------------------------------
+ \renewcommand{\labelitemi}{$\textendash$}
+\begin{itemize}
+
+% -----------------------------------------------------
+% Ex. 2
+% -----------------------------------------------------
+\item \textbf{2. Model Checking}
+
+  \begin{enumerate}[(a)]
+    \item Set up posterior predictive test quantities to check the following assumptions: 1) independent Poisson distributions 2) no trend over time.
+
+    To test Poisson distributions, we use Fano factor ($\sigma^2/\mu$). For Poisson distribution, it is close to 1. To test if the data are from independent distributions, I think it can be tested along with "no trend over time" using autocorreltion.
+    \item Use simulations from the posterior predictive distributions to measure the discrapancies.
+    
+      \begin{enumerate}[(i)]
+        \item Assume that the numbers of fatal accidents in each year are independent with a Poisson distribution.  \\
+        Hence fatal accident follows: 
+        $$
+        p(y|\theta) = \frac{1}{y!}\theta^y\exp(-\theta)
+        $$
+        The likelihood:
+        $$
+        p(y|\theta) = \prod_{i=1}^{10} \frac{1}{y_i!}\theta^{y_i} \exp(-\theta) \sim \theta^{10 \bar y} \exp(-10\theta)
+        $$
+        where $\bar y = \frac{1}{10}\sum_{i=1}^{10} y_i$.
+        
+        Since I don't have any extra information, let's set prior distribution for $\theta \sim \text{beta}(0, 0)$. Hence the posterior distribution
+        $$
+        p(\theta | y) \sim \text{Gamma} (10 \bar y, 10)
+        $$
+        
+        To compare the posterior predictive test quantities, we will perform the following sampling 1000 times:
+        \begin{enumerate}[(1))]
+          \item $\theta^s \sim p(\theta | y_1, \cdots, y_{10})$ 
+          \item $\tilde{y_i^s} \sim p(y | \theta^s), \forall i \in \{1, 2, \cdots, 10\}$
+          \end{enumerate}
+        % fano factor
+        For Fano factor, the p-value and graphical result are shown in \ref{fig:fano}. p-value is near 0.5, indicating that posterior predictive's fano number is similar to data.
+        \begin{figure}[ht] %  figure placement: here, top, bottom, or page
+           \centering
+           \includegraphics[width=5in]{{code/ch6/2_fano_factor.png}} 
+           \caption{Posterior predictive Fano factor distribution}
+           \label{fig:fano}
+        \end{figure}
+
+        
+        % autocorrelation
+        Use lag $k=1$ autocorrelation, defined as
+        $$
+          r_1 = \frac{\sum_{i=1}^{N-1}(y_i - \bar y)(y_{i+1} - \bar y)}{\sum_{i=1}^{N-1} (y_i - \bar y)^2} 
+        $$
+        The p-value and the graphical result are shown in \ref{fig:autocorr}. 
+        
+        We notice that $p(\text{autocorrelation}(sample) > \text{autocorrelation}(data)) \approx 0.025$, which means that the assumption that year-to-year fatal accidents are independent is inadequate. 
+
+
+        \begin{figure}[ht] %  figure placement: here, top, bottom, or page
+           \centering
+           \includegraphics[width=5in]{{code/ch6/2_autocorrelation.png}} 
+           \caption{Posterior predictive autocorrelation distribution}
+           \label{fig:autocorr}
+        \end{figure}
+
+        \item Assumes that the numbers of fatal accidents in each year follows independent Poisson distribution with a constant rate and an exposure in each year proportional to the number of passenger miles flown.
+
+      \end{enumerate} 
+  \end{enumerate}
+
+% ---------------------------------
+% End
+% ---------------------------------
+\end{itemize}
+\end{document}
