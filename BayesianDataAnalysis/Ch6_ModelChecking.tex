@@ -4,6 +4,7 @@
 \usepackage{amsmath,amsthm,amssymb,hyperref}
 
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage[shortlabels]{enumitem}
 \usepackage{tgschola}
 
@@ -90,8 +91,8 @@
         For Fano factor, the p-value and graphical result are shown in \ref{fig:fano}. p-value is near 0.5, indicating that posterior predictive's fano number is similar to data.
         \begin{figure}[ht] %  figure placement: here, top, bottom, or page
            \centering
-           \includegraphics[width=5in]{{code/ch6/2_fano_factor.png}} 
-           \caption{Posterior predictive Fano factor distribution}
+           \includegraphics[width=5in]{{code/ch6/2_fano_factor_model1.png}} 
+           \caption{Posterior predictive Fano factor distribution for model 1}
            \label{fig:fano}
         \end{figure}
 
@@ -108,13 +109,39 @@
 
         \begin{figure}[ht] %  figure placement: here, top, bottom, or page
            \centering
-           \includegraphics[width=5in]{{code/ch6/2_autocorrelation.png}} 
-           \caption{Posterior predictive autocorrelation distribution}
+           \includegraphics[width=5in]{{code/ch6/2_autocorrelation_model1.png}} 
+           \caption{Posterior predictive autocorrelation distribution for model 1}
            \label{fig:autocorr}
         \end{figure}
 
-        \item Assumes that the numbers of fatal accidents in each year follows independent Poisson distribution with a constant rate and an exposure in each year proportional to the number of passenger miles flown.
-
+        \item Assumes that the numbers of fatal accidents in each year follows independent Poisson distribution with a constant rate and an exposure in each year proportional to the number of passenger miles flown. Denote $y$ to be the number of fatal accidents, $\theta$ the rate, $x$ the number of passger miles flown. We have
+        $$
+          y | \theta, x \sim \text{Poisson}(x\theta) = \frac{1}{y!} (x\theta)^y \exp (-x\theta)
+        $$ 
+        The likelihood of the data
+        $$
+          p(y|\theta, x) = \prod_{i=1}^{10} \frac{1}{y_i!} (x_i\theta)^{y_i} \exp (-x_i\theta) \sim \theta^{\sum_{i=1}^{10} y_i} \exp { \left(-\theta \sum_{i=1}^{10} x_i \right)}
+        $$
+        Similarly, if we choose prior to be $\text{Gamma}(0, 0)$, then the posterior distribution is
+        $$
+        p(\theta | y) = \text{Gamma}(10 \bar y, 10 \bar x)
+        $$
+        where $\bar y = \frac{1}{10} \sum_{i=1}^{10} y_i$ and $\bar x = \frac{1}{10} \sum_{i=1}^{10} x_i$.
+        Not until I did the sampling in python, did I realize that $\beta$ is too large to have a reliable simulation. According to \url{https://en.wikipedia.org/wiki/Gamma_distribution#Scaling}, if 
+       $$ X \sim \text{Gamma}(\alpha, \beta), $$
+       then
+       $$ cX \sim \text{Gamma} (\alpha, \frac{\beta}{c}). $$
+       
+       The simulation results are shown in \ref{fig:fano2}. We notice that this model better captured the autocorrelation within the data, but not the Fano factor. Our model significantly increases the ratio between variance and the mean. Notice in the simulation, I first sample a $\theta$, and then use the same $\theta^s$ times the passenger miles flown to get the rate for Poisson Distribution. Hence, if there were more passenger miles flown, the model would have a greater fatal accident rate. However, this model is limited, not considering many more factors. For one thing, technology improves over the years too along with that the fights get more popular.  
+       
+        \begin{figure}[ht] %  figure placement: here, top, bottom, or page
+           \centering
+           \includegraphics[width=5in]{{code/ch6/2_fano_factor_model2.png}}
+           \includegraphics[width=5in]{{code/ch6/2_autocorrelation_model2.png}} 
+           \caption{Posterior predictive Fano factor (top) and autocorrelation distribution (bottom) for model 2}
+           \label{fig:fano2}
+        \end{figure}
+      
       \end{enumerate} 
   \end{enumerate}
 
