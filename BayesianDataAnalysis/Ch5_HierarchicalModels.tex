@@ -80,7 +80,7 @@
 % -----------------------------------------------------
 % Ex. 7
 % -----------------------------------------------------
-\item \textbf{Continuous mixture models}
+\item \textbf{7. Continuous mixture models}
   \begin{enumerate}[(a)]
     \item We have
       \begin{align*}
@@ -103,11 +103,39 @@
       $$
       and 
       $$
-      \mathbb V(y) = \mathbb E \left( \mathbb V(y | \theta) \right) + \mathbb V \left ( \mathbb E(\theta | y) \right) = \mathbb E (\theta) + \mathbb V(\theta) = \frac{\alpha}{\beta^2} (\beta + 1)
+      \mathbb V(y) = \mathbb E \left( \mathbb V(y | \theta) \right) + \mathbb V \left ( \mathbb E(y|\theta ) \right) = \mathbb E (\theta) + \mathbb V(\theta) = \frac{\alpha}{\beta^2} (\beta + 1)
       $$
 
+     \item From Eq.(3.3), we have $\mu | \sigma^2, y \sim N(\bar y, \sigma^2/n)$. Therefore,
+      $$
+       \mathbb E(\sqrt n (\mu - \bar y)/s) = \mathbb E \left( \mathbb E(\sqrt n (\mu - \bar y)/s | \sigma^2) \right) = \mathbb E \left( \sqrt n \mathbb E(\mu - \bar y | \sigma^2, y) / s^2 \right) = 0
+      $$
+    The variance:  
+    \begin{align*}
+      \mathbb V(\sqrt n (\mu - \bar y)/s) &= \mathbb E \left( \mathbb V( \sqrt n (\mu - \bar y)/s| \sigma^2) \right) + \mathbb V \left ( \mathbb E( \sqrt n (\mu - \bar y)/s|\sigma^2 ) \right) \\
+      &= \mathbb E \left( \frac{n}{s^2} \mathbb V(\mu | \sigma^2, y)  \right) + 0 \\
+      &= \mathbb E \left( \frac{n}{s^2} \frac{\sigma^2}{n} \right) \qquad \sigma^2|y \sim \text{Inv-}\chi^2(n-1, s^2) \\
+      &= \frac{n-1}{n-3} 
+    \end{align*}
+  
     \end{enumerate}
 
+
+% -----------------------------------------------------
+% Ex. 9
+% -----------------------------------------------------
+\item \textbf{9. Noninformative hyperprior distribution}
+  \begin{enumerate}[(a)]
+    \item
+    \item We have uniform distribution on $\left(\frac{\alpha}{\alpha+\beta}, (\alpha+\beta)^{-1/2} \right)$. Denote $u = \frac{\alpha}{\alpha+\beta}$ and $v=(\alpha+\beta)^{-1/2}$, then
+      $$
+      p(\alpha, \beta) = p(u,v) \begin{vmatrix}
+        \frac{\partial u}{\partial \alpha} &  \frac{\partial u}{\partial \beta} \\
+        \frac{\partial v}{\partial \alpha} &  \frac{\partial v}{\partial \beta} 
+      \end{vmatrix} = \begin{vmatrix} \beta/(\alpha+\beta)^2 & -\alpha/(\alpha+\beta)^2 \\
+        -\frac{1}{2}(\alpha+\beta)^{-3/2} & -\frac{1}{2}(\alpha+\beta)^{-3/2}  \end{vmatrix} = -\frac{1}{2}(\alpha+\beta)^{-5/2}
+      $$
+    \end{enumerate}
 
 % -----------------------------------------------------
 % End
