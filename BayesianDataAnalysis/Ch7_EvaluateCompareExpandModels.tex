@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[margin=0.6in]{geometry} 
+
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tgschola}
+
+\newcommand{\R}{\mathbf{R}}  
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+
+\large % please keep the text at this size for ease of reading.
+
+% ------------------------------------------ %
+%                 START HERE             %
+% ------------------------------------------ %
+
+{\Large Page 163 % Replace with appropriate page number 
+\hfill  Ch7, Evaluating, Comparing, and Expanding Models}
+
+\begin{center}
+{\Large Xinyu Tan} 
+\end{center}
+\vspace{0.05in}
+
+% -----------------------------------------------------
+% The "enumerate" environment allows for automatic problem numbering.
+% To make the number for the next problem, type " \item ". 
+% To make sub-problems such as (a), (b), etc., use an "enumerate" within an "enumerate."
+% -----------------------------------------------------
+ \renewcommand{\labelitemi}{$\textendash$}
+\begin{itemize}
+
+% -----------------------------------------------------
+% Ex. 1
+% -----------------------------------------------------
+\item \textbf{1. Predictive accuracy and cross-validation: } compute AIC, DIC, WAIC, and cross-validation for the logistic regression fit to the bioassay example of section 3.7. The code is under the directory code/ch7/
+  \begin{enumerate}
+    \item AIC
+
+      The maximum likelihood estimate for $(\hat{\alpha}, \hat{\beta}) = (0.8431, 7.7258)$. Since we have 2 parameters, hence, the value of $\hat{\text{elpd}}_{\text{AIC}}$ is
+      $$
+      -5.89 - 2 = -7.89,
+      $$
+      and $\text{AIC}=-2\hat{\text{elpd}}_{\text{AIC}} = 15.78$.
+    
+    \item DIC
+
+      Following the example given in the book, we need to first calculate 
+      $$p_{\text{DIC}} = 2 ( \log p(y|E_{\text{post}}(\alpha, \beta)) - E_{\text{post}} (\log p(y | \alpha, \beta))). $$
+      The second of these terms can be calculated as
+      $$
+      E_{\text{post}}(y | \alpha, \beta) = \frac{1}{S} \sum_{s=1}^S \sum_{i=1}^4 \log p(y_i | \alpha^s, \beta^s, x_i, n_i) = -7.018
+      $$
+      based on a large number S of simulation draws. 
+      
+      The first term 
+      $$
+      \log p\left(y | E_{\text{post}} (\theta) \right) = \sum_{i=1}^4 \log p(y_i | E_{\text{post}}(\alpha|y), E_{\text{post}}(\beta | y), x_i, n_i) = -6.119,
+      $$
+      which gives $p_{\text{DIC}} = 2 (-6.119 - (-7.108)) = 1.7214$, $\hat{\text{elpd}}_{\text{DIC}} = \log p\left(y | E_{\text{post}} (\theta) \right) - p_{\text{DIC}} = -7.817$, and $\text{DIC} = -2 \hat{\text{elpd}}_{\text{DIC}} = 15.635$.
+
+    \item WAIC
+
+      The log pointwise predictive probability of the observed data under the fitted model is
+      $$
+      \text{llpd} = \sum_{i=1}^4 \log \left (\frac{1}{S} \sum_{i=1}^S \left([\text{logit}^{-1}(\alpha^s + \beta^s x_i)]^{y_i} [1 - \text{logit}^{-1}(\alpha^s + \beta^s x_i)]^{n_i - y_i} \right)\right) = -6.651.
+      $$
+      The effective number of the parameters can be caculated as 
+      $$
+      p_{\text{WAIC}1} = 2 (\text{llpd} - E_{\text{post}}(y | \alpha, \beta)) = 0.670
+      $$
+      or 
+      $$
+      p_{\text{WAIC}2} = \sum_{i=1}^4 \text{var}_{\text{post}} (\log p(y_i | \alpha, \beta)),
+      $$
+      which can be computed as (Eq. 7.12, \textit{want to take a note here too, so I copy the formula over}) 
+      $$
+      \text{computed }p_{\text{WAIC}2} = \sum_{i=1}^4 V_{s=1}^S \left( \log p(y_i|\alpha^s, \beta^s) \right) = 1.073,
+      $$
+      where $V_{s=1}^S a_s = \frac{1}{S-1} (a_s - \bar a)^2$, the sample variance. 
+      
+      Then $\hat{\text{elpd}}_{\text{WAIC}1} = \text{llpd} - p_{\text{waic}1} = -7.321$, $\hat{\text{elpd}}_{\text{WAIC}2} = \text{llpd} - p_{\text{waic}2} = -7.724$, so WAIC is 14.642 or 15.448.
+
+    \item cross-validation
+  \end{enumerate}
+
+% ---------------------------------
+% End
+% ---------------------------------
+\end{itemize}
+\end{document}

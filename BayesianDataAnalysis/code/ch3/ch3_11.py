@@ -53,7 +53,7 @@ if __name__ == '__main__':
     prior = compute_prior(alpha_grid, beta_grid, parameters)
     lld = compute_log_likelihood(alpha_grid, beta_grid)
     log_posterior = np.log(prior) + lld
-    posterior = np.exp(np.log(prior) + log_posterior)
+    posterior = np.exp(log_posterior)
     posterior = posterior / np.sum(posterior)
 
     # sampling from the posterior distribution
