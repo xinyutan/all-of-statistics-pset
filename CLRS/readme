@@ -1,0 +1,15 @@
+Another computer science classics...
+
+I learned data structures and algorithms through MOOCs and leetcode. They definitely are very helpful, for example, I can solve common problems without much issues, but the limit is that when the problems get harder I am stuck at coming up a "correct" solution. In How to Solve It, Polya said 
+
+"""
+Intuitive insight and formal proof are two different ways of perceiving the truth, comparable to the perception of a material object through two different senses, sight and touch. 
+
+Intuitive insight may rush far ahead of formal proof.
+
+Formal manipulation of logical rules and algebraic formulas may get far ahead of intuition. Almost everybody can see at once that 3 straight lines, taken at random, divide the plane into 7 parts. Scarcely anybody is able to see, even training his attention to the utmost, that 5 planes, taken at random, divide space into 26 parts. Yet it can be rigidly proved that the right number is 26, and the proof is not even long or difficult.
+"""
+
+I find the lack of the training of formal proof in algorithms problems limits my ability to come up with correct and efficient algorithms. That's why I look forward to Graduate Algorithm in OMSCS program.. But before I take that class, I can practice on my own here. 
+
+May 19, 2020
